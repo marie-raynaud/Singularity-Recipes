@@ -1,0 +1,24 @@
+Bootstrap: localimage
+From: ./Base.sif
+
+
+%environment
+	export PATH=/opt/supernova-2.1.1:$PATH
+	export PATH=/opt/longranger-2.2.2:$PATH
+
+
+%post
+	wget -O supernova-2.1.1.tar.gz "http://cf.10xgenomics.com/releases/assembly/supernova-2.1.1.tar.gz?Expires=1584782638&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cDovL2NmLjEweGdlbm9taWNzLmNvbS9yZWxlYXNlcy9hc3NlbWJseS9zdXBlcm5vdmEtMi4xLjEudGFyLmd6IiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNTg0NzgyNjM4fX19XX0_&Signature=DRgVN~Hdzu-0gJkmkZql3HCLl~Y6qeBjmFIhazo6HOfX4wmNKnyXz~rmubYr9owDGJrZ1LfsxI5nwKocac1Wx1pGye02wb7jHlNFLMVCrk-jiWwiUfkB78Vr5K4uDGo2MAQAs80ynr7D9yw0rcnx58PQ1aZZboOzWSvxy3PpuNR5LYEyZhNebm4h4jLh3ac9DzA5lpoKRjtZ3PVANhALgaz11XC9XYTIb-MXCHtFLADgHGLT9M-MtiJxrgG4dt9eyFOvum49BKLdIL4cD4i2k-cgYZ2v-85JtsAqAfUGm-gCWjqq9QabSuXcZsSiepe~4Fo5rY2aHju41iKyad~Igg__&Key-Pair-Id=APKAI7S6A5RYOXBWRPDA"
+	wget -O longranger-2.2.2.tar.gz "http://cf.10xgenomics.com/releases/genome/longranger-2.2.2.tar.gz?Expires=1584787106&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cDovL2NmLjEweGdlbm9taWNzLmNvbS9yZWxlYXNlcy9nZW5vbWUvbG9uZ3Jhbmdlci0yLjIuMi50YXIuZ3oiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE1ODQ3ODcxMDZ9fX1dfQ__&Signature=Yl9N6abtirXasop3NyXX4aAEbw52X86fB1Ruhl57Z5MGiQ7bNQu3b1Wo538E7d8ue4LH1YBwap~Cp4j8UpzDUALunYgFM9KkYFDjXGiUqwxYryaWoN7DJc8w~dP8yPIL3ygrGqTcfLIonUQmtCi1EVj~0ibXUHqjmWZATZJU7cp2veKI4DK66pQnym5OWBR8i6~jZ4SY6NGUZ8knOEVkOtm9J9ycb2JYSg88wDAnQNcLrXGrQLCGJReWlIYG2QJGtuso~gSuTSyU5REqg2DKXPyb2lekr1Qmdjlsm4ZNqfcHaUUrYIiN-t9xNyvm-I1ZjXdShn5bGChrXM7IPhw2Gg__&Key-Pair-Id=APKAI7S6A5RYOXBWRPDA"
+	tar -xzvf supernova-2.1.1.tar.gz -C /opt
+	tar -xzvf longranger-2.2.2.tar.gz -C /opt
+
+
+	
+	
+
+	
+	
+	
+	
+	
