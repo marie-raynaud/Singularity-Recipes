@@ -1,0 +1,75 @@
+Bootstrap: docker
+From: rocker/r-ver:3.5.3
+IncludeCmd: yes
+
+%environment
+	export PATH=/opt/tools/bin:$PATH
+
+	PATH="/usr/local/anaconda/bin:$PATH"
+	
+	export LANG=en_US.UTF-8
+	export LANGUAGE=en_US:en
+	export LC_ALL=en_US.UTF-8
+
+%labels
+	Author wicopa - Marie RAYNAUD - Pierre-Alexandre GAGNAIRE
+	Version v0.1.2
+	build_date Mar 25, 2020, 11:21:07 AM
+	Contains: R-v3.5.3, snakemake-v5.10.0, python-v3.7.4, msprime-v0.7.4, tskit-v0.2.3 
+	Image_name Base_msprime
+
+%post
+	mkdir -p /share/apps/bin
+	mkdir /share/apps/lib
+	mkdir /share/apps/gridengine
+	mkdir /share/bio
+	mkdir -p /opt/gridengine
+	mkdir -p /export/scrach
+	mkdir -p /usr/lib64
+	ln -s /bin/bash /bin/mbb_bash   
+	ln -s /bin/bash /bin/isem_bash
+	/usr/sbin/groupadd --system --gid 400 sge
+	/usr/sbin/useradd --system --uid 400 --gid 400 -c GridEngine --shell /bin/true --home /opt/gridengine sge
+
+	TZ=Europe/Paris; ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+	apt update
+	apt-get install -y curl wget git nano
+	apt-get install -y build-essential checkinstall make cmake software-properties-common
+	apt-get install -y libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev liblzma-dev
+	apt-get install -y libxml2-dev libcurl4-openssl-dev
+
+############### Install Conda ##############
+	apt update
+	apt -y install curl bzip2 \
+	&& curl -sSL https://repo.continuum.io/miniconda/Miniconda3-4.6.14-Linux-x86_64.sh -o /tmp/miniconda.sh \
+	&& bash /tmp/miniconda.sh -b -p /usr/local/anaconda
+	export PATH="/usr/local/anaconda/bin:$PATH"
+
+	conda config --add channels bioconda
+	conda config --add channels anaconda
+	conda config --add channels conda-forge
+	conda update conda
+	conda clean --all --yes 
+
+############### Install Python Libraries ##############
+	conda install msprime=0.7.4
+	conda install tskit=0.2.3
+	conda install snakemake=5.10.0
+	conda install python=3.7.4
+	conda install numpy=1.18.1
+	conda install matplotlib=3.2.0
+	conda install scipy=1.4.1
+	conda install pyfaidx=0.5.8
+	conda install boost=1.72.0
+	conda install gsl=2.6
+
+############### Install R Packages ##############
+	Rscript -e 'install.packages("BiocManager",Ncpus=8, repos="https://cloud.r-project.org/", clean=TRUE)'
+	Rscript -e 'install.packages("lmtest",Ncpus=8, clean=TRUE)'
+	Rscript -e 'install.packages("ggplot2",Ncpus=8, clean=TRUE)'
+	Rscript -e 'install.packages("devtools",Ncpus=8, clean=TRUE)'
+	Rscript -e 'install.packages(c("shiny","shinydashboard","shinyjs","shinyFiles"),Ncpus=8, repos="https://cloud.r-project.org/", clean=TRUE)'
+	Rscript -e 'install.packages(c("DT","yaml","tidyverse","gplots"),Ncpus=8, repos="https://cloud.r-project.org/", clean=TRUE)'
+
+
