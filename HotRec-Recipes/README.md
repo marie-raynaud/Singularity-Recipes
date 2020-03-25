@@ -8,11 +8,8 @@
 
 
 
-  1.2 Create a writable Singularity container `Simul_LDhelmet.sif` as root from the existing container `Base_LDhelmet.sif` in Singularity Image Format (SIF) 
+###  1.2 Create a writable Singularity container `Simul_LDhelmet.sif` as root from the existing container `Base_msprime.sif` in Singularity Image Format (SIF) 
 
 `sudo singularity build --writable Simul_LDhelmet.sif LDhelmet_Singularity_Recipe.def`
-
-### `LDhelmet_Singularity_Recipe.def` 
-Recipe to build the `LDhelmet_Singularity_Recipe.sif` container
 
 
