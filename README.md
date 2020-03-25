@@ -2,8 +2,9 @@
 
 ## Recipes to build Singularity Containers
 
-### HotRec Project Containers
+1. ### HotRec Project Containers
 1./ Create a Singularity container `Base_msprime.sif` in Singularity Image Format (SIF) as root: 
+
 Contains: `R-v3.5.3`, `snakemake-v5.10.0`, `python-v3.7.4`, `msprime-v0.7.4`, `tskit-v0.2.3`, and other packages 
 
 `sudo singularity build Base_msprime.sif Base_msprime_Recipe-v0.1.2.def`
