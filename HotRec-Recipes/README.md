@@ -1,6 +1,6 @@
-# HotRec Project Containers
+## HotRec Project Containers
 
-##  1.1 Create a Singularity container `Base_msprime.sif` in Singularity Image Format (SIF) as root: 
+###  1.1 Create a Singularity container `Base_msprime.sif` in Singularity Image Format (SIF) as root: 
 
 `sudo singularity build Base_msprime.sif Base_msprime_Recipe-v0.1.2.def`
 
