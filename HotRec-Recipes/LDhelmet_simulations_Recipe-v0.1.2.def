@@ -1,0 +1,98 @@
+Bootstrap: localimage
+From: ./Base_msprime.sif
+
+
+%environment
+	export PATH=/opt/biotools/bin:$PATH
+	export ROOTSYS=/opt/biotools/root
+	export LD_LIBRARY_PATH='$LD_LIBRARY_PATH:$ROOTSYS/lib'
+	export LANG=en_US.UTF-8
+	export LANGUAGE=en_US:en
+	export LC_ALL=en_US.UTF-8
+	export LD_LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib
+	export PERL5LIB=/home/vcftools/src/perl/
+	export LD_LIBRARY_PATH=/home/my_boost/lib/:$LD_LIBRARY_PATH
+	export LD_LIBRARY_PATH=/home/my_gsl/lib/:$LD_LIBRARY_PATH
+
+
+%labels
+	Author wicopa - Marie RAYNAUD - Pierre-Alexandre GAGNAIRE
+	Version v0.1.2
+	build_date Mar 27, 2020, 18:35:00 PM
+	Contains: R-v3.5.3, snakemake-v5.10.0, python-v3.7.4, msprime-v0.7.4, tskit-v0.2.3, boost-v1.72.0, gsl-v2.6, LDhelmet_v1.10, vcftools-v0.1.16
+	Image_name LDhelmet_simulations_Recipe
+
+
+%post
+
+############### Install Boost ##############	
+	cd /home
+	mkdir my_boost
+	apt-get install -y wget gcc g++
+	wget https://dl.bintray.com/boostorg/release/1.72.0/source/boost_1_72_0.tar.gz
+	mv boost_1_72_0.tar.gz /home/my_boost
+	cd /home/my_boost
+	mkdir include
+	mkdir lib
+	tar xzvf boost_1_72_0.tar.gz
+	rm boost_1_72_0.tar.gz
+	cd boost_1_72_0
+	bash bootstrap.sh --prefix=/home/my_boost/ --with-libraries=all
+	./b2 install -j4 threading=multi
+
+############### Install GSL ##############
+	cd /home
+	mkdir my_gsl
+	apt-get install wget
+	wget http://mirror.cyberbits.eu/gnu/gsl/gsl-2.6.tar.gz
+	mv gsl-2.6.tar.gz /home/my_gsl
+	cd /home/my_gsl
+	mkdir include
+	mkdir lib
+	mkdir bin
+	mkdir share
+	tar xzvf gsl-2.6.tar.gz
+	rm gsl-2.6.tar.gz
+	cd gsl-2.6
+	./configure --prefix=$PWD/..
+	make
+	make install
+
+############### Install LDhelmet ##############
+	cd /home
+	mkdir ldhelmet
+	wget https://sourceforge.net/projects/ldhelmet/files/LDhelmet_v1.10.tgz
+	mv LDhelmet_v1.10.tgz /home/ldhelmet
+	cd /home/ldhelmet
+	tar xzvf LDhelmet_v1.10.tgz
+	rm LDhelmet_v1.10.tgz
+	cd LDhelmet_v1.10
+	grep -v '#INC_FLAG' Makefile > Makefile1
+	grep -v '#LIB_FLAG' Makefile1 > Makefile2
+	sed -i 's|INC_FLAG =|INC_FLAG = -I/home/my_boost/include -I/home/my_gsl/include|g' Makefile2
+	sed -i 's|LIB_FLAG =|LIB_FLAG = -L/home/my_boost/lib -L/home/my_gsl/lib|g' Makefile2  
+	sed -i 's/LIB = -lboost_thread -lboost_program_options -lboost_system -lgsl -lgslcblas/LIB = -lboost_thread -lboost_program_options -lboost_system -lgsl -lgslcblas -pthread/g' Makefile2 
+	mv Makefile2 Makefile
+	rm Makefile1
+	make
+
+############### Configure LDhemet Simulations ##############	
+	mkdir /RUN
+	mkdir /home/ldhelmet/LDhelmet_v1.10/output
+	
+	git clone https://github.com/PA-GAGNAIRE/HotRec.git
+	mv ./HotRec/RUN_LD /home/
+	rm -r ./HotRec/
+
+	apt-get install -y autoconf
+	apt-get remove -y vcftools
+	git clone https://github.com/vcftools/vcftools.git
+	cd ./vcftools
+	apt-get install -y pkg-config
+	./autogen.sh
+	./configure
+	make
+	make install
+
+%runscript
+	exec /bin/bash "$@"
