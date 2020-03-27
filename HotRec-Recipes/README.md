@@ -10,6 +10,6 @@
 
 ###  2. Create a writable Singularity container `Simul_LDhelmet.sif` as root from the existing container `Base_msprime.sif` in Singularity Image Format (SIF) 
 
-`sudo singularity build --writable Simul_LDhelmet.sif LDhelmet_simulations_Recipe-v0.1.2.def`
+`sudo singularity build Simul_LDhelmet.sif LDhelmet_simulations_Recipe-v0.1.2.def`
 
 
