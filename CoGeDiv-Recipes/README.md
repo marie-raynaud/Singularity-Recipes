@@ -1,7 +1,10 @@
+## CoGeDiv Project Containers
 
-#### `Base.def`
-Recipe to build the `Base.sif` container, which is build from `rocker/r-ver:3.5.3` and contains `python3` and `snakemake5.4.0`
 
-#### `SuperNova2.def`
-Recipe to build the `SuperNova2.sif` container, which is build from `Base.sif` and contains `supernova-2.1.1` and `longranger-2.2.2`
+
+####  1. Create a Singularity container `Base_SuperNova2.sif` in Singularity Image Format (SIF) as root: 
+
+`sudo singularity build Base_SuperNova2.sif Base_SuperNova2_v0.0.2.def`
+
+*Contains:* `R-v3.5.3`, `snakemake-v5.10.0`, `python-v2.7` & `python-v3.7`, `proc10xG`, `jellyfish-v2.3.0`, `genomescope-v1.0` & `genomescope-v2.0`, `supernova-v2.1.1`, `longranger-v2.2.2`, and other packages 
 
